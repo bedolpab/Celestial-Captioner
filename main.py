@@ -6,14 +6,17 @@ from bs4 import BeautifulSoup
 import re 
 import json
 import cProfile     
+import skimage
+from scipy import misc
+import pandas as pd
 
 
 def scrape():
     # MAX PAGE: 1250
     url = 'https://www.jpl.nasa.gov/images?page='
-    key_items = {}
-
-    for i in range(1, 3):
+    titles = []
+    urls = []
+    for i in range(1, 2):
         url = url + str(i)
         req = requests.get(url)
         soup = BeautifulSoup(req.content, 'html.parser').find_all('li')
@@ -23,9 +26,16 @@ def scrape():
             image = data.find_all('img')
 
             for i in h2s:
-                key_items[i.text.strip()] = image[0]['data-src']
+                # Read Image:
+                # image_numpy = skimage.io.imread(image[0]['data-src'])
+                # data[i.text.strip()] = image[0]['data-src']
+                titles.append(i.text.strip())
+                urls.append(image[0]['data-src'])
 
-    print(json.dumps(key_items, sort_keys=True, indent=4))
+    data = {'Titles': titles, 'Images': urls}
+    df = pd.DataFrame(data)
+    print(df)
+    # print(json.dumps(key_items, sort_keys=True, indent=4))
 
 
 def execute():
@@ -33,4 +43,4 @@ def execute():
 
 
 if __name__ == "__main__":
-    cProfile.run('execute()')
+    execute()

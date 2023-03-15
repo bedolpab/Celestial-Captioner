@@ -9,33 +9,24 @@ import cProfile
 import skimage
 from scipy import misc
 import pandas as pd
+import time
 
 
 def scrape():
-    # MAX PAGE: 1250
     url = 'https://www.jpl.nasa.gov/images?page='
-    titles = []
-    urls = []
-    for i in range(1, 2):
-        url = url + str(i)
+    scraped_data = pd.DataFrame(columns=['Title', 'Image'])
+
+    for i in range(1, 1251):
+        url = f'https://www.jpl.nasa.gov/images?page={i}'
         req = requests.get(url)
         soup = BeautifulSoup(req.content, 'html.parser').find_all('li')
 
-        for data in soup:
-            h2s = data.find_all('span')
-            image = data.find_all('img')
+        for li_element in soup:
+            title = li_element.find('span').text.strip()
+            image = li_element.find('img')['data-src']
+            scraped_data.loc[len(scraped_data.index)] = [title, image]
 
-            for i in h2s:
-                # Read Image:
-                # image_numpy = skimage.io.imread(image[0]['data-src'])
-                # data[i.text.strip()] = image[0]['data-src']
-                titles.append(i.text.strip())
-                urls.append(image[0]['data-src'])
-
-    data = {'Titles': titles, 'Images': urls}
-    df = pd.DataFrame(data)
-    print(df)
-    # print(json.dumps(key_items, sort_keys=True, indent=4))
+    scraped_data.to_csv('celestial_data.csv', index=False)
 
 
 def execute():

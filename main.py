@@ -20,13 +20,13 @@ def scrape():
         url = f'https://www.jpl.nasa.gov/images?page={i}'
         req = requests.get(url)
         soup = BeautifulSoup(req.content, 'html.parser').find_all('li')
-
         for li_element in soup:
             title = li_element.find('span').text.strip()
             image = li_element.find('img')['data-src']
             scraped_data.loc[len(scraped_data.index)] = [title, image]
 
-    scraped_data.to_csv('celestial_data.csv', index=False)
+    scraped_data.to_csv('celestial_data.csv', mode='a',
+                        header=False, index=False)
 
 
 def execute():

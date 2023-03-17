@@ -22,11 +22,11 @@ This is to avoid having to type `python 3.x `file``
 chmod +x main.py
 ```
 
-4. Run the scrip
+4. Run the script
 ```
 ./main.py
 ```
 
 ---
 
-The scraper retreives all image titles and images (as url strings) and saves them to a csv file. 
+The scraper retreives all images titles and images (as url strings) and saves them to a csv file. 

@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 
-import os
 import requests
 from bs4 import BeautifulSoup
-import re 
-import json
-import cProfile     
-import skimage
-from scipy import misc
 import pandas as pd
-import time
 
 
 def scrape():
@@ -27,6 +20,10 @@ def scrape():
 
     scraped_data.to_csv('celestial_data.csv', mode='a',
                         header=False, index=False)
+
+
+def read_data(filename: str):
+    return pd.read_csv(filename, lineterminator='\n')
 
 
 def execute():

@@ -18,7 +18,7 @@ def scrape():
             image = li_element.find('img')['data-src']
             scraped_data.loc[len(scraped_data.index)] = [title, image]
 
-    scraped_data.to_csv('celestial_data.csv', mode='a',
+    scraped_data.to_csv('data.csv', mode='a',
                         header=False, index=False)
 
 
